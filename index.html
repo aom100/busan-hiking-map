@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>등산 맛집 지도</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <style>
         body { margin: 0; padding: 0; font-family: 'Malgun Gothic', sans-serif; }
+        
+        /* 지도가 화면에 꽉 차게 */
         #map { width: 100%; height: 100vh; }
         
         /* 제목 박스 스타일 */
@@ -14,9 +18,10 @@
             border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             text-align: center; font-weight: bold; color: #2E8B57;
             border: 2px solid #2E8B57;
+            width: 80%; max-width: 300px;
         }
 
-        /* ⭐ 내 위치 찾기 버튼 스타일 */
+        /* 내 위치 찾기 버튼 스타일 */
         .my-location-btn {
             position: absolute; bottom: 30px; right: 20px; z-index: 10;
             background-color: #ffffff; color: #333;
@@ -26,8 +31,7 @@
             font-weight: bold; font-size: 14px;
             display: flex; align-items: center; gap: 5px;
         }
-        .my-location-btn:hover { background-color: #f0f0f0; }
-
+        
         /* 말풍선 스타일 */
         .info-box { padding: 5px; width: 150px; text-align: center; }
         .info-title { font-weight: bold; display: block; margin-bottom: 5px; }
@@ -42,31 +46,32 @@
     <div id="map"></div>
 
     <button class="my-location-btn" onclick="findMyLocation()">
-        ◎ 내 위치 찾기
+        ◎ 내 위치
     </button>
 
-    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=fd3700902efcb45ab6ee8c1baf09338a"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=fd3700902efcb45ab6ee8c1baf09338a"></script>
     
     <script>
         var mapContainer = document.getElementById('map'); 
-        var mapCenter = new kakao.maps.LatLng(35.2355, 129.0831); // 기본 위치 (금정산성)
+        var mapCenter = new kakao.maps.LatLng(35.2355, 129.0831); // 금정산성
         var mapOption = { center: mapCenter, level: 4 };
         var map = new kakao.maps.Map(mapContainer, mapOption); 
 
-        // 내 위치 마커 (처음엔 안 보임)
+        // 내 위치 마커 (빨간색)
         var myMarker = new kakao.maps.Marker({
             map: map,
             image: new kakao.maps.MarkerImage(
-                'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 빨간색 마커 이미지
+                'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', 
                 new kakao.maps.Size(30, 40)
             )
         });
+        myMarker.setVisible(false); // 처음엔 숨김
 
-        // 1. 맛집 데이터 (필요하면 복사해서 늘리세요)
+        // 1. 맛집 데이터
         var positions = [
-            { title: '산성 오리불고기', lat: 35.2365, lng: 129.0845, link: '#' },
-            { title: '금정 파전집', lat: 35.2345, lng: 129.0815, link: '#' },
-            { title: '등산객 국수', lat: 35.2350, lng: 129.0855, link: '#' }
+            { title: '산성 오리불고기', lat: 35.2365, lng: 129.0845, link: 'https://place.map.kakao.com/1111' },
+            { title: '금정 파전집', lat: 35.2345, lng: 129.0815, link: 'https://place.map.kakao.com/2222' },
+            { title: '등산객 국수', lat: 35.2350, lng: 129.0855, link: 'https://place.map.kakao.com/3333' }
         ];
 
         // 2. 맛집 마커 찍기
@@ -83,26 +88,20 @@
             kakao.maps.event.addListener(marker, 'click', function() { infowindow.open(map, marker); });
         }
 
-        // ⭐ 3. 내 위치 찾는 함수 (버튼 누르면 실행됨)
+        // 3. 내 위치 찾는 함수
         function findMyLocation() {
             if (navigator.geolocation) {
-                // 브라우저에게 위치 요청
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude; // 위도
-                    var lon = position.coords.longitude; // 경도
-                    
-                    var locPosition = new kakao.maps.LatLng(lat, lon); // 내 위치 좌표 생성
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var locPosition = new kakao.maps.LatLng(lat, lon); 
 
-                    // 지도 이동
                     map.setCenter(locPosition);
-                    
-                    // 빨간 마커를 내 위치로 옮김
                     myMarker.setPosition(locPosition);
-                    
-                    alert("내 위치로 이동했습니다! 🚩");
+                    myMarker.setVisible(true); 
                     
                 }, function(error) {
-                    alert("위치를 가져올 수 없습니다. 권한을 확인해주세요.");
+                    alert("위치를 가져올 수 없습니다. GPS 설정을 확인해주세요.");
                 });
             } else {
                 alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
