@@ -19,6 +19,17 @@
             width: 80%; max-width: 300px;
         }
 
+        /* [추가] 공유하기 버튼 스타일 */
+        .share-btn {
+            position: absolute; top: 80px; right: 20px; z-index: 10;
+            background-color: #FEE500; color: #000000; /* 카카오 노란색 느낌 */
+            border: none; border-radius: 50%;
+            width: 50px; height: 50px; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-weight: bold; font-size: 24px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
         .my-location-btn {
             position: absolute; bottom: 30px; right: 20px; z-index: 10;
             background-color: #ffffff; color: #333;
@@ -29,21 +40,22 @@
             display: flex; align-items: center; gap: 5px;
         }
         
-        /* 정보창 깔끔한 스타일 (사진 제거됨) */
         .info-box { padding: 10px; width: 220px; text-align: center; }
-        
         .info-title { font-weight: bold; display: block; margin-bottom: 5px; font-size: 16px; color: #333;}
-        .info-addr { display: block; font-size: 12px; color: #888; margin-bottom: 8px; } 
+        .info-addr { display: block; font-size: 12px; color: #888; margin-bottom: 5px; } 
         
+        .info-holiday { 
+            display: block; font-size: 12px; color: #d32f2f; font-weight: bold;
+            margin-bottom: 8px; background-color: #ffebee; padding: 4px; border-radius: 4px;
+        }
+
         .info-tags { margin-bottom: 10px; font-size: 11px; color: #555; }
         .tag-badge { 
             background-color: #e8f5e9; color: #2e7d32; 
             padding: 3px 6px; border-radius: 4px; margin-right: 2px;
             display: inline-block; margin-bottom: 2px;
         }
-        .tag-badge.alert { background-color: #ffebee; color: #c62828; }
 
-        /* 버튼 그룹 */
         .btn-group { display: flex; justify-content: space-between; gap: 5px; }
         .btn {
             flex: 1; padding: 8px 0; border-radius: 6px;
@@ -63,6 +75,10 @@
         ⛰️ 등산 하산 맛집
     </div>
     
+    <button class="share-btn" onclick="shareMap()" title="친구에게 공유하기">
+        📤
+    </button>
+    
     <div id="map"></div>
 
     <button class="my-location-btn" onclick="findMyLocation()">
@@ -74,12 +90,11 @@
     <script>
         var mapContainer = document.getElementById('map'); 
         
-        // 산데미 수제만두 (확인된 정확한 위치)
-        var targetLat = 35.2750378;
-        var targetLng = 129.0854493;
+        var targetLat = 35.2741478;
+        var targetLng = 129.0852957;
 
         var mapCenter = new kakao.maps.LatLng(targetLat, targetLng); 
-        var mapOption = { center: mapCenter, level: 4 }; 
+        var mapOption = { center: mapCenter, level: 5 }; 
         var map = new kakao.maps.Map(mapContainer, mapOption); 
 
         var myMarker = new kakao.maps.Marker({
@@ -91,34 +106,45 @@
         });
         myMarker.setVisible(false);
 
-        // 1. 맛집 데이터 (imgUrl 제거됨)
         var positions = [
             { 
+                title: '가야포차선지국밥', 
+                lat: 35.2741478, 
+                lng: 129.0852957,
+                address: '부산 금정구 남산동 960-6', 
+                phone: '051-582-3305',
+                tags: ['수구레국밥', '아침식사', '혼밥'], 
+                link: 'https://map.kakao.com/link/search/부산 남산동 가야포차선지국밥' 
+            },
+            { 
+                title: '오동통치킨호프', 
+                lat: 35.273462, 
+                lng: 129.0924445, 
+                address: '부산 금정구 청룡동 17-23', 
+                phone: '051-508-4545',
+                holiday: '매주 화요일',
+                tags: ['치킨', '호프', '뒷풀이'], 
+                link: 'https://map.kakao.com/link/search/부산 청룡동 오동통치킨' 
+            },
+            { 
+                title: '감나무집', 
+                lat: 35.2788505, 
+                lng: 129.0769869,
+                address: '부산 금정구 청룡동 465-2', 
+                phone: '010-5180-6235',
+                holiday: '매주 화, 수요일',
+                tags: ['오리불고기', '주차가능', '단체환영'], 
+                link: 'https://map.kakao.com/link/search/부산 청룡동 감나무집' 
+            },
+            { 
                 title: '산데미 수제만두', 
-                lat: targetLat, 
-                lng: targetLng,
+                lat: 35.2750378, 
+                lng: 129.0854493,
                 address: '부산 금정구 청룡로 65', 
                 phone: '051-515-5255',
-                tags: ['주차가능', '단체석', '화요일휴무'], 
-                link: 'https://place.map.kakao.com/2190527855' 
-            },
-            { 
-                title: '산성 오리불고기', 
-                lat: 35.2365, 
-                lng: 129.0845,
-                address: '부산 금정구 산성로',
-                phone: '051-123-4567',
-                tags: ['족구장', '단체'],
-                link: 'https://place.map.kakao.com/1111' 
-            },
-            { 
-                title: '금정 파전집', 
-                lat: 35.2345, 
-                lng: 129.0815, 
-                address: '부산 금정구 산성마을',
-                phone: '051-987-6543',
-                tags: ['막걸리', '노포'],
-                link: 'https://place.map.kakao.com/2222' 
+                holiday: '매주 화요일',
+                tags: ['주차가능', '단체석'], 
+                link: 'https://map.kakao.com/link/search/부산 산데미 수제만두' 
             }
         ];
 
@@ -134,9 +160,13 @@
             var tagsHtml = '';
             if (data.tags) {
                 data.tags.forEach(function(tag) {
-                    var className = (tag.includes('휴무') || tag.includes('브레이크')) ? 'tag-badge alert' : 'tag-badge';
-                    tagsHtml += '<span class="' + className + '">' + tag + '</span>';
+                    tagsHtml += '<span class="tag-badge">' + tag + '</span>';
                 });
+            }
+
+            var holidayHtml = '';
+            if (data.holiday) {
+                holidayHtml = '<span class="info-holiday">🛑 휴무: ' + data.holiday + '</span>';
             }
 
             var naviLink = 'https://map.kakao.com/link/to/' + data.title + ',' + data.lat + ',' + data.lng;
@@ -145,9 +175,8 @@
                 '<div class="info-box">' +
                     '<span class="info-title">' + data.title + '</span>' +
                     '<span class="info-addr">' + (data.address ? data.address : '') + '</span>' +
-                    
+                    holidayHtml +
                     '<div class="info-tags">' + tagsHtml + '</div>' +
-                    
                     '<div class="btn-group">' +
                         '<a href="tel:' + data.phone + '" class="btn btn-call">📞 전화</a>' +
                         '<a href="' + naviLink + '" class="btn btn-navi" target="_blank">🚗 길찾기</a>' +
@@ -160,8 +189,6 @@
             kakao.maps.event.addListener(marker, 'click', function() { 
                 infowindow.open(map, marker); 
             });
-            
-            if(data.title === '산데미 수제만두') infowindow.open(map, marker);
         }
 
         function findMyLocation() {
@@ -178,6 +205,31 @@
                 });
             } else {
                 alert("위치 기능을 지원하지 않습니다.");
+            }
+        }
+
+        // [추가] 공유하기 기능 함수
+        function shareMap() {
+            // 현재 페이지 주소 가져오기
+            var currentUrl = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: '부산 등산 맛집 지도',
+                    text: '부산 금정구 등산 후 가기 좋은 맛집 지도입니다! (감나무집, 가야포차 등)',
+                    url: currentUrl,
+                })
+                .then(() => console.log('공유 성공'))
+                .catch((error) => console.log('공유 실패', error));
+            } else {
+                // PC 등 공유 기능을 지원하지 않는 경우 주소 복사
+                var tempElem = document.createElement('textarea');
+                tempElem.value = currentUrl;
+                document.body.appendChild(tempElem);
+                tempElem.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempElem);
+                alert("주소가 복사되었습니다! 친구에게 붙여넣기(Ctrl+V)해서 보내주세요.");
             }
         }
     </script>
