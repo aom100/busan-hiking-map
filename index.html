@@ -19,10 +19,9 @@
             width: 80%; max-width: 300px;
         }
 
-        /* [추가] 공유하기 버튼 스타일 */
         .share-btn {
             position: absolute; top: 80px; right: 20px; z-index: 10;
-            background-color: #FEE500; color: #000000; /* 카카오 노란색 느낌 */
+            background-color: #FEE500; color: #000000;
             border: none; border-radius: 50%;
             width: 50px; height: 50px; cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -31,7 +30,7 @@
         }
 
         .my-location-btn {
-            position: absolute; bottom: 30px; right: 20px; z-index: 10;
+            position: absolute; bottom: 70px; right: 20px; z-index: 10;
             background-color: #ffffff; color: #333;
             border: none; border-radius: 5px;
             padding: 10px 15px; cursor: pointer;
@@ -39,23 +38,31 @@
             font-weight: bold; font-size: 14px;
             display: flex; align-items: center; gap: 5px;
         }
+
+        .my-logo-box {
+            position: absolute; bottom: 20px; right: 20px; z-index: 10;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 8px 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 13px; font-weight: bold; color: #333;
+            pointer-events: none;
+            border: 1px solid #ddd;
+        }
         
         .info-box { padding: 10px; width: 220px; text-align: center; }
         .info-title { font-weight: bold; display: block; margin-bottom: 5px; font-size: 16px; color: #333;}
         .info-addr { display: block; font-size: 12px; color: #888; margin-bottom: 5px; } 
-        
         .info-holiday { 
             display: block; font-size: 12px; color: #d32f2f; font-weight: bold;
             margin-bottom: 8px; background-color: #ffebee; padding: 4px; border-radius: 4px;
         }
-
         .info-tags { margin-bottom: 10px; font-size: 11px; color: #555; }
         .tag-badge { 
             background-color: #e8f5e9; color: #2e7d32; 
             padding: 3px 6px; border-radius: 4px; margin-right: 2px;
             display: inline-block; margin-bottom: 2px;
         }
-
         .btn-group { display: flex; justify-content: space-between; gap: 5px; }
         .btn {
             flex: 1; padding: 8px 0; border-radius: 6px;
@@ -85,16 +92,21 @@
         ◎ 내 위치
     </button>
 
+    <div class="my-logo-box">
+        ⓒ Created by 장원석
+    </div>
+
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=fd3700902efcb45ab6ee8c1baf09338a"></script>
     
     <script>
         var mapContainer = document.getElementById('map'); 
         
-        var targetLat = 35.2741478;
-        var targetLng = 129.0852957;
+        // 지도 중심을 '명품생오리' (백양대로320번길 18) 쪽으로 설정
+        var targetLat = 35.1547889;
+        var targetLng = 129.0164143;
 
         var mapCenter = new kakao.maps.LatLng(targetLat, targetLng); 
-        var mapOption = { center: mapCenter, level: 5 }; 
+        var mapOption = { center: mapCenter, level: 7 }; 
         var map = new kakao.maps.Map(mapContainer, mapOption); 
 
         var myMarker = new kakao.maps.Marker({
@@ -106,7 +118,73 @@
         });
         myMarker.setVisible(false);
 
+        // 맛집 리스트 (총 11곳)
         var positions = [
+            { 
+                title: '명품생오리', 
+                // [주소 수정 완료] 부산 부산진구 백양대로320번길 18 1층
+                lat: 35.1547889, 
+                lng: 129.0164143, 
+                address: '부산 부산진구 백양대로320번길 18 1층', 
+                phone: '051-892-5992',
+                tags: ['생오리', '양념불고기', '가족외식'], 
+                link: 'https://map.kakao.com/link/search/부산 개금 명품생오리' 
+            },
+            { 
+                title: '엄마손보리밥', 
+                lat: 35.154137, 
+                lng: 129.0163963, 
+                address: '부산 사상구 주례동 43-17', 
+                phone: '051-313-7755',
+                tags: ['보리밥', '수육포함', '가성비'], 
+                link: 'https://map.kakao.com/link/search/부산 주례동 엄마손보리밥' 
+            },
+            { 
+                title: '일품통돼지김치찌개', 
+                lat: 35.1816912, 
+                lng: 129.0460038, 
+                address: '부산 부산진구 초읍천로 105', 
+                phone: '051-816-3366',
+                tags: ['김치찌개', '통돼지볶음', '어린이대공원'], 
+                link: 'https://map.kakao.com/link/search/부산 초읍 일품통돼지김치찌개' 
+            },
+            { 
+                title: '아줌마재첩국', 
+                lat: 35.2256148, 
+                lng: 129.0802079, 
+                address: '부산 금정구 장전동 519-10', 
+                phone: '051-514-1176',
+                tags: ['재첩국', '비빔밥', '아침식사'], 
+                link: 'https://map.kakao.com/link/search/부산 아줌마재첩국' 
+            },
+            { 
+                title: '오리방', 
+                lat: 35.2514615, 
+                lng: 129.0521331, 
+                address: '부산 금정구 금성동 248-4', 
+                phone: '051-582-6066',
+                tags: ['오리숯불구이', '백숙', '단체모임'], 
+                link: 'https://map.kakao.com/link/search/부산 금성동 오리방' 
+            },
+            { 
+                title: '수림식당 본점', 
+                lat: 35.2266604, 
+                lng: 129.0777626,
+                address: '부산 금정구 금샘로 7', 
+                phone: '0507-1355-1931',
+                holiday: '브레이크타임 15:00~17:00',
+                tags: ['탄탄면', '가지만두', '웨이팅맛집'], 
+                link: 'https://map.kakao.com/link/search/부산 수림식당 본점' 
+            },
+            { 
+                title: '강남웰빙보리밥', 
+                lat: 35.2754063, 
+                lng: 129.0874656,
+                address: '부산 금정구 남산동 133-2', 
+                phone: '051-513-8997',
+                tags: ['보리밥정식', '막걸리공짜', '가성비'], 
+                link: 'https://map.kakao.com/link/search/부산 남산동 강남웰빙보리밥' 
+            },
             { 
                 title: '가야포차선지국밥', 
                 lat: 35.2741478, 
@@ -166,7 +244,7 @@
 
             var holidayHtml = '';
             if (data.holiday) {
-                holidayHtml = '<span class="info-holiday">🛑 휴무: ' + data.holiday + '</span>';
+                holidayHtml = '<span class="info-holiday">🛑 ' + data.holiday + '</span>';
             }
 
             var naviLink = 'https://map.kakao.com/link/to/' + data.title + ',' + data.lat + ',' + data.lng;
@@ -189,6 +267,9 @@
             kakao.maps.event.addListener(marker, 'click', function() { 
                 infowindow.open(map, marker); 
             });
+            
+            // 명품생오리 정보창 자동 열기
+            if(data.title === '명품생오리') infowindow.open(map, marker);
         }
 
         function findMyLocation() {
@@ -208,21 +289,17 @@
             }
         }
 
-        // [추가] 공유하기 기능 함수
         function shareMap() {
-            // 현재 페이지 주소 가져오기
             var currentUrl = window.location.href;
-
             if (navigator.share) {
                 navigator.share({
                     title: '부산 등산 맛집 지도',
-                    text: '부산 금정구 등산 후 가기 좋은 맛집 지도입니다! (감나무집, 가야포차 등)',
+                    text: '부산 등산 후 가기 좋은 맛집 지도입니다! - Created by 장원석',
                     url: currentUrl,
                 })
                 .then(() => console.log('공유 성공'))
                 .catch((error) => console.log('공유 실패', error));
             } else {
-                // PC 등 공유 기능을 지원하지 않는 경우 주소 복사
                 var tempElem = document.createElement('textarea');
                 tempElem.value = currentUrl;
                 document.body.appendChild(tempElem);
