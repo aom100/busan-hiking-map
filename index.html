@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#2E8B57"> <style>
+    <meta name="theme-color" content="#2E8B57"> 
+    
+    <style>
         body { margin: 0; padding: 0; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; }
         
         #map { width: 100%; height: 100vh; }
@@ -102,10 +104,13 @@
     <script>
         var mapContainer = document.getElementById('map'); 
         
-        var targetLat = 35.1547889;
-        var targetLng = 129.0164143;
+        // 지도 중심을 '자연숯불갈비' (양산) 쪽으로 설정
+        var targetLat = 35.4944213;
+        var targetLng = 129.0891476;
 
         var mapCenter = new kakao.maps.LatLng(targetLat, targetLng); 
+        // 양산과 부산이 거리가 좀 있어서 레벨을 8~9 정도로 넓게 잡거나, 
+        // 일단 해당 가게를 자세히 보여주기 위해 7로 설정
         var mapOption = { center: mapCenter, level: 7 }; 
         var map = new kakao.maps.Map(mapContainer, mapOption); 
 
@@ -119,6 +124,16 @@
         myMarker.setVisible(false);
 
         var positions = [
+            { 
+                title: '자연숯불갈비', 
+                // [신규 추가] 경남 양산시 하북면 월평로 16
+                lat: 35.4944213, 
+                lng: 129.0891476, 
+                address: '경남 양산시 하북면 월평로 16', 
+                phone: '055-384-9293',
+                tags: ['한우갈비살', '등심', '통도사맛집'], 
+                link: 'https://map.kakao.com/link/search/양산 자연숯불갈비' 
+            },
             { 
                 title: '명품생오리', 
                 lat: 35.1547889, 
@@ -265,6 +280,9 @@
             kakao.maps.event.addListener(marker, 'click', function() { 
                 infowindow.open(map, marker); 
             });
+            
+            // 신규 추가된 '자연숯불갈비' 정보창 열기
+            if(data.title === '자연숯불갈비') infowindow.open(map, marker);
         }
 
         function findMyLocation() {
