@@ -104,13 +104,12 @@
     <script>
         var mapContainer = document.getElementById('map'); 
         
-        // 지도 중심을 '자연숯불갈비' (양산) 쪽으로 설정
-        var targetLat = 35.4944213;
-        var targetLng = 129.0891476;
+        // 지도 중심을 '산내음' (수정된 위치: 살짝 밑으로)
+        // [수정 좌표] 35.5598, 129.0694
+        var targetLat = 35.5598;
+        var targetLng = 129.0694;
 
         var mapCenter = new kakao.maps.LatLng(targetLat, targetLng); 
-        // 양산과 부산이 거리가 좀 있어서 레벨을 8~9 정도로 넓게 잡거나, 
-        // 일단 해당 가게를 자세히 보여주기 위해 7로 설정
         var mapOption = { center: mapCenter, level: 7 }; 
         var map = new kakao.maps.Map(mapContainer, mapOption); 
 
@@ -123,10 +122,29 @@
         });
         myMarker.setVisible(false);
 
+        // 맛집 리스트
         var positions = [
             { 
+                title: '산내음', 
+                // [좌표 재수정] 방금 위치에서 살짝 밑(남쪽)으로 이동
+                lat: 35.5598, 
+                lng: 129.0694, 
+                address: '울산 울주군 상북면 등억알프스로 466 1층', 
+                phone: '052-254-2112',
+                tags: ['오리불고기', '막국수', '백숙'], 
+                link: 'https://map.kakao.com/link/search/울산 산내음' 
+            },
+            { 
+                title: '연정슈퍼', 
+                lat: 35.250620, 
+                lng: 129.056680, 
+                address: '부산 금정구 금성동 547-23', 
+                phone: '051-516-8106', 
+                tags: ['라면', '파전', '도토리묵', '가맥'], 
+                link: 'https://map.kakao.com/link/search/부산 연정슈퍼' 
+            },
+            { 
                 title: '자연숯불갈비', 
-                // [신규 추가] 경남 양산시 하북면 월평로 16
                 lat: 35.4944213, 
                 lng: 129.0891476, 
                 address: '경남 양산시 하북면 월평로 16', 
@@ -281,8 +299,8 @@
                 infowindow.open(map, marker); 
             });
             
-            // 신규 추가된 '자연숯불갈비' 정보창 열기
-            if(data.title === '자연숯불갈비') infowindow.open(map, marker);
+            // 산내음 정보창 자동 열기
+            if(data.title === '산내음') infowindow.open(map, marker);
         }
 
         function findMyLocation() {
